@@ -1,0 +1,188 @@
+{
+  "reportName": "Relatório de Faturamento (Exemplo)",
+  "pageWidth": 794,
+  "pageHeight": 1123,
+  "bands": [
+    {
+      "id": "ReportHeader",
+      "name": "Report Header",
+      "height": 100,
+      "visible": true
+    },
+    {
+      "id": "PageHeader",
+      "name": "Page Header",
+      "height": 80,
+      "visible": true
+    },
+    {
+      "id": "Detail",
+      "name": "Detail",
+      "height": 50,
+      "visible": true
+    },
+    {
+      "id": "PageFooter",
+      "name": "Page Footer",
+      "height": 50,
+      "visible": true
+    },
+    {
+      "id": "ReportFooter",
+      "name": "Report Footer",
+      "height": 80,
+      "visible": true
+    }
+  ],
+  "elements": [
+    {
+      "id": "efb9f2eb-d1e9-4bb4-ac9b-012b1a1c3e10",
+      "type": "Text",
+      "bandId": "ReportHeader",
+      "x": 200,
+      "y": 20,
+      "width": 394,
+      "height": 45,
+      "properties": {
+        "text": "RELATÓRIO DE FATURAMENTO M8",
+        "fontSize": 24,
+        "fontFamily": "Arial",
+        "fontWeight": "bold",
+        "color": "#1e3a8a",
+        "textAlign": "center"
+      }
+    },
+    {
+      "id": "line-header",
+      "type": "Line",
+      "bandId": "ReportHeader",
+      "x": 50,
+      "y": 70,
+      "width": 694,
+      "height": 2,
+      "properties": {
+        "borderWidth": 2,
+        "borderColor": "#9ca3af"
+      }
+    },
+    {
+      "id": "label-cliente",
+      "type": "Text",
+      "bandId": "PageHeader",
+      "x": 50,
+      "y": 30,
+      "width": 150,
+      "height": 30,
+      "properties": {
+        "text": "Nome do Cliente",
+        "fontSize": 14,
+        "fontFamily": "Arial",
+        "fontWeight": "bold",
+        "color": "#4b5563",
+        "textAlign": "left"
+      }
+    },
+    {
+      "id": "label-cidade",
+      "type": "Text",
+      "bandId": "PageHeader",
+      "x": 350,
+      "y": 30,
+      "width": 150,
+      "height": 30,
+      "properties": {
+        "text": "Cidade",
+        "fontSize": 14,
+        "fontFamily": "Arial",
+        "fontWeight": "bold",
+        "color": "#4b5563",
+        "textAlign": "left"
+      }
+    },
+    {
+      "id": "label-valor",
+      "type": "Text",
+      "bandId": "PageHeader",
+      "x": 550,
+      "y": 30,
+      "width": 150,
+      "height": 30,
+      "properties": {
+        "text": "Valor da Fatura",
+        "fontSize": 14,
+        "fontFamily": "Arial",
+        "fontWeight": "bold",
+        "color": "#4b5563",
+        "textAlign": "right"
+      }
+    },
+    {
+      "id": "data-cliente",
+      "type": "DataField",
+      "bandId": "Detail",
+      "x": 50,
+      "y": 10,
+      "width": 250,
+      "height": 30,
+      "properties": {
+        "dataField": "Cliente.Nome",
+        "fontSize": 14,
+        "fontFamily": "Helvetica Neue, Arial",
+        "fontWeight": "normal",
+        "color": "#111827",
+        "textAlign": "left"
+      }
+    },
+    {
+      "id": "data-cidade",
+      "type": "DataField",
+      "bandId": "Detail",
+      "x": 350,
+      "y": 10,
+      "width": 150,
+      "height": 30,
+      "properties": {
+        "dataField": "Cliente.Cidade",
+        "fontSize": 14,
+        "fontFamily": "Helvetica Neue, Arial",
+        "fontWeight": "normal",
+        "color": "#111827",
+        "textAlign": "left"
+      }
+    },
+    {
+      "id": "data-valor",
+      "type": "DataField",
+      "bandId": "Detail",
+      "x": 550,
+      "y": 10,
+      "width": 150,
+      "height": 30,
+      "properties": {
+        "dataField": "Fatura.Valor",
+        "fontSize": 14,
+        "fontFamily": "Courier New",
+        "fontWeight": "bold",
+        "color": "#dc2626",
+        "textAlign": "right"
+      }
+    },
+    {
+      "id": "footer-text",
+      "type": "Text",
+      "bandId": "PageFooter",
+      "x": 50,
+      "y": 10,
+      "width": 300,
+      "height": 20,
+      "properties": {
+        "text": "Documento gerado pelo FrontM8 - Report Designer",
+        "fontSize": 10,
+        "fontFamily": "Arial",
+        "fontWeight": "lighter",
+        "color": "#9ca3af",
+        "textAlign": "left"
+      }
+    }
+  ]
+}
