@@ -1,4 +1,5 @@
 import React from 'react';
+import { Eye } from 'lucide-react';
 import { useReportStore } from '../store/useReportStore';
 import { mockData } from '../mockData';
 
@@ -67,33 +68,41 @@ export const ReportPreview: React.FC<{ onClose: () => void }> = ({ onClose }) =>
   };
 
   return (
-    <div className="fixed inset-0 bg-gray-500 bg-opacity-75 z-50 flex flex-col p-8">
-      <div className="bg-white rounded-t shadow-lg flex justify-between items-center p-4 max-w-5xl mx-auto w-full">
-        <h2 className="text-xl font-bold text-gray-800">Visualização do Relatório</h2>
-        <div className="space-x-3">
+    <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[100] flex flex-col p-4 md:p-12 animate-in fade-in duration-300">
+      <div className="bg-white/90 backdrop-blur-md rounded-t-2xl shadow-2xl flex justify-between items-center p-6 max-w-5xl mx-auto w-full border-b border-gray-100">
+        <div className="flex items-center gap-3">
+          <div className="bg-blue-600 text-white p-2 rounded-lg shadow-lg">
+            <Eye size={20} />
+          </div>
+          <div>
+            <h2 className="text-xl font-black text-gray-800 tracking-tight">Visualização do Relatório</h2>
+            <p className="text-xs text-gray-400 font-medium">Layout: {report.reportName}</p>
+          </div>
+        </div>
+        
+        <div className="flex items-center gap-3">
           <button 
             onClick={() => window.print()}
-            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 font-medium transition-colors"
+            className="px-6 py-2.5 bg-blue-600 text-white rounded-xl hover:bg-blue-700 font-bold text-sm shadow-lg shadow-blue-200 transition-all hover:-translate-y-0.5 active:translate-y-0 flex items-center gap-2"
           >
             Imprimir PDF
           </button>
           <button 
             onClick={onClose}
-            className="px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300 font-medium transition-colors"
+            className="px-6 py-2.5 bg-gray-100 text-gray-600 rounded-xl hover:bg-gray-200 font-bold text-sm transition-all flex items-center gap-2"
           >
             Fechar
           </button>
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto bg-gray-100 flex justify-center p-8 print:p-0 print:bg-white">
+      <div className="flex-1 overflow-y-auto bg-slate-200/50 flex justify-center p-8 print:p-0 print:bg-white custom-scrollbar rounded-b-2xl max-w-5xl mx-auto w-full shadow-2xl overflow-x-hidden border-x border-b border-gray-50">
         {/* A4 Paper Simulation - This is what gets printed */}
         <div 
-          className="bg-white shadow-xl print:shadow-none"
+          className="bg-white shadow-[0_20px_50px_rgba(0,0,0,0.15)] origin-top print:shadow-none mb-12"
           style={{ 
             width: `${report.pageWidth}px`, 
             minHeight: `${report.pageHeight}px`,
-            // Oculta margens na hora da impressão real
           }}
         >
           {/* Header */}
@@ -101,11 +110,13 @@ export const ReportPreview: React.FC<{ onClose: () => void }> = ({ onClose }) =>
           {renderBand('PageHeader')}
 
           {/* Details - Repete para cada linha da Fonte de Dados Real ou Mock */}
-          {dataToRender.map((dataRow, idx) => (
-            <React.Fragment key={`detail-${idx}`}>
-              {renderBand('Detail', dataRow)}
-            </React.Fragment>
-          ))}
+          <div className="flex flex-col">
+            {dataToRender.map((dataRow, idx) => (
+              <React.Fragment key={`detail-${idx}`}>
+                {renderBand('Detail', dataRow)}
+              </React.Fragment>
+            ))}
+          </div>
 
           {/* Footers */}
           {renderBand('PageFooter')}

@@ -6,6 +6,8 @@ interface ReportState {
   report: ReportDefinition;
   selectedElementIds: string[];
   dataFields: string[];
+  guidelinesX: number[];
+  guidelinesY: number[];
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   previewData: Record<string, any>[] | null;
   // Actions
@@ -25,14 +27,21 @@ interface ReportState {
   setReport: (report: ReportDefinition) => void;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   setDataFields: (fields: string[], data: Record<string, any>[]) => void;
+  addGuidelineX: (x: number) => void;
+  removeGuidelineX: (x: number) => void;
+  updateGuidelineX: (oldX: number, newX: number) => void;
+  addGuidelineY: (y: number) => void;
+  removeGuidelineY: (y: number) => void;
+  updateGuidelineY: (oldY: number, newY: number) => void;
+  toggleBandVisibility: (bandId: string) => void;
 }
 
 const initialBands: ReportBand[] = [
-  { id: 'ReportHeader', type: 'ReportHeader', name: 'Report Header', height: 100, visible: true },
-  { id: 'PageHeader', type: 'PageHeader', name: 'Page Header', height: 80, visible: true },
+  { id: 'ReportHeader', type: 'ReportHeader', name: 'Report Header', height: 100, visible: false },
+  { id: 'PageHeader', type: 'PageHeader', name: 'Page Header', height: 80, visible: false },
   { id: 'Detail', type: 'Detail', name: 'Detail', height: 200, visible: true },
-  { id: 'PageFooter', type: 'PageFooter', name: 'Page Footer', height: 50, visible: true },
-  { id: 'ReportFooter', type: 'ReportFooter', name: 'Report Footer', height: 80, visible: true },
+  { id: 'PageFooter', type: 'PageFooter', name: 'Page Footer', height: 50, visible: false },
+  { id: 'ReportFooter', type: 'ReportFooter', name: 'Report Footer', height: 80, visible: false },
 ];
 
 export const useReportStore = create<ReportState>((set) => ({
@@ -45,6 +54,8 @@ export const useReportStore = create<ReportState>((set) => ({
   },
   selectedElementIds: [],
   dataFields: [], // Campos dinâmicos carregados
+  guidelinesX: [],
+  guidelinesY: [],
   previewData: null, // Guardará os dados do JSON lido
 
   addElement: (type, bandId, x, y, dataField) =>
@@ -226,10 +237,48 @@ export const useReportStore = create<ReportState>((set) => ({
     },
     selectedElementIds: [],
     dataFields: [],
+    guidelinesX: [],
+    guidelinesY: [],
     previewData: null,
   }),
 
   setReport: (report) => set({ report, selectedElementIds: [] }),
 
   setDataFields: (fields, data) => set({ dataFields: fields, previewData: data }),
+
+  addGuidelineX: (x) => set((state) => {
+    if (state.guidelinesX.some(g => Math.abs(g - x) < 3)) return state;
+    return { guidelinesX: [...state.guidelinesX, x].sort((a,b) => a - b) };
+  }),
+
+  removeGuidelineX: (x) => set((state) => ({ 
+    guidelinesX: state.guidelinesX.filter(g => g !== x) 
+  })),
+
+  updateGuidelineX: (oldX, newX) => set((state) => {
+    // If we're dragging over another guideline, avoid merge unless it's a final state
+    return {
+      guidelinesX: state.guidelinesX.map(g => g === oldX ? newX : g).sort((a,b) => a - b)
+    };
+  }),
+
+  addGuidelineY: (y) => set((state) => {
+    if (state.guidelinesY.some(g => Math.abs(g - y) * 1 < 3)) return state;
+    return { guidelinesY: [...state.guidelinesY, y].sort((a,b) => a - b) };
+  }),
+
+  removeGuidelineY: (y) => set((state) => ({ 
+    guidelinesY: state.guidelinesY.filter(g => g !== y) 
+  })),
+
+  updateGuidelineY: (oldY, newY) => set((state) => ({
+    guidelinesY: state.guidelinesY.map(g => g === oldY ? newY : g).sort((a,b) => a - b)
+  })),
+
+  toggleBandVisibility: (bandId) => set((state) => ({
+    report: {
+      ...state.report,
+      bands: state.report.bands.map(b => b.id === bandId ? { ...b, visible: !b.visible } : b)
+    }
+  })),
 }));
